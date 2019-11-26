@@ -1,0 +1,43 @@
+===========================================> SECURITY CHECKLIST<==============================================
+
+    Authentication &             Transport Encryption                    Encryption at Reset
+     Authorization 
+
+1) Authentication & Authorization
+
+     --------------------------> Role Based Access Control <--------------------------------------------
+     see image -> Role Based Access Control.png
+
+     --------------------------> Creating and Eidting Users <--------------------------------------------
+
+     To start mongodb with user authentication use '--auth' flag
+
+    To create a new user:
+
+    use admin;
+    db.createUser({user: 'ankur', pwd: 'ankur', roles: ["userAdminAnyDatabase"]});
+
+    use admin;
+    db.auth('ankur', 'ankur');
+
+     ----------------------------------> Built-in Roles <------------------------------------------------
+
+        Database Users              Database admin              All Database roles
+           
+           read                        dbAdmin                   readAnyDatabase
+          readWrite                   userAdmin                 readWriteAnyDatabase
+                                       dbOwner                  userAdminAnyDatabase
+                                                                 dbAdminAnyDatabase
+
+        Cluster Admin               Backup/ Restore                 Superuser
+
+         clusterManager                 Backup                      dbOwner (admin)
+         clusterMonitor                 Restore                     userAdmin (admin)            
+         hostManager                                                userAdminAnyDatabase
+         clusterAdmin                                                      root
+
+    use admin;
+    db.updateUser("krishna", {roles: ["readWrite", {role: "readWrite", db: "blog"}]});
+
+2) Transport Encryption
+        Not done :(

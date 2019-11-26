@@ -1,5 +1,4 @@
 require('dotenv').config();
-require('winston-daily-rotate-file');
 require('express-async-errors');
 
 const express = require('express');
@@ -42,6 +41,9 @@ const server = app.listen(process.env.PORT, (err) => {
     console.log("Server running at port: ", process.env.PORT);
 })
 
+process.on('unhandledRejection', (ex) => {
+    throw ex;
+});
 
 // CleanUp before termination
 const sigs = ['SIGINT', 'SIGTERM', 'SIGQUIT']
@@ -55,7 +57,7 @@ process.on(sig, shutdown);
             process.exit(0);               // exiting the process with status 0
         });
         setTimeout((err) => {
-            console.log('Forcing server close !!!', e);
+            console.log('Forcing server close !!!', err);
             cleanUp()
             process.exit(1)
           }, 5000)

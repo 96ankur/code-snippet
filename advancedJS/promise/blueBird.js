@@ -1,4 +1,4 @@
-const Promise = require('bluebird');
+// const Promise = require('bluebird');
 
 let promise1 = new Promise((resolve, reject)=>{
     setTimeout(function(){
@@ -27,7 +27,17 @@ let promise4 = new Promise((resolve, reject)=>{
     }, 4000);
 })
 
+async function test(){
+    const data = /* await */ Promise.all([promise1,promise2,promise3,promise4]);
+    console.log('ankur',data);
+}
 
+test();
+// Promise.all([promise1,promise2,promise3,promise4])
+//        .then(data => {
+//            data.map
+//        })
+//        .catch(err => console.log(err));
 // var parallel = function(do1Param, do2Param) {
 //     return Promise.race([promise1, promise2, promise3, promise4])
 //   }

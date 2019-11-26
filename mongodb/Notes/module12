@@ -197,3 +197,49 @@ Query: db.friends.aggregate([
             {$group: {_id: "$_id", name: {$first: "$name"},maxScore: {$max: "$score"}}},
             {$sort: {maxScore:-1}}
          ]).pretty();
+
+==================================================> BUCKET <===============================================================
+
+Query: db.persons.aggregate([
+   {
+      $bucket:{
+         groupBy: "$dob.age",
+         boundaries: [0, 18, 30, 50, 80, 120],
+         output: {
+            numPersons: {$sum:1},
+            averageAge: {$avg: "$dob.age"}
+         }
+      }
+   }
+]).pretty();
+
+
+Query: db.persons.aggregate([
+   {
+      $bucketAuto:{
+         groupBy: "$dob.age",
+         buckets: 5,
+         output: {
+            numPersons: {$sum:1},
+            averageAge: {$avg: "$dob.age"}
+         }
+      }
+   }
+]).pretty();
+
+
+
+
+==================================================> ADDITIONAL STAGES <============================================================
+
+db.persons.aggregate([
+   { $project: {_id: 0, name: { $concat: ["$name.first", " ", "$name.last"]}, birthdate: {$toDate: "$dob.date"}}},
+   { $sort: {birthdate: 1}},
+   { $skip: 10},
+   { $limit: 10}
+]).pretty();
+
+==================================================> TO ADD TO A NEW COLLECTION <==================================================
+
+use {$out: "transformedPersons"} as a stage and this will store data coming from the previous stage to the "transformedPersons"
+collection

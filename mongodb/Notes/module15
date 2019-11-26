@@ -1,0 +1,49 @@
+================================> Performance, Fault Tolerancy & Deployment<===================================
+
+    ----------------------------------> WHAT INFLUENCES PERFORMANCE? <-----------------------------------
+
+                Developer/ DB Admin                             DB Admin / System Admin
+            
+            Efficient Queries/ Operations                           Hardware & Network
+                    Indexes                                           Sharding
+                Fitting Data Schema                                  Replica Sets
+
+    ---------------------------------------> CAPPED COLLECTIONS <-----------------------------------------
+    
+    It is store where oldest data is automatically deleted when new data comes in. The size of capped
+    collection is 4 bytes (default). But size can be set explicitly.
+    
+    Query to create capped collection:
+
+    db.createCollection("capped", {capped: true, size: 10000, max: 3});
+                                                               |-----------> maximum number of documents
+
+    When we find documents from a capped collection, then documents are retrived in the same order as they are
+    stored in. 
+
+    ---------------------------------------> REPLICA SETS <-----------------------------------------
+
+    Advantages:
+    1) Backup / Fault Tolerancy
+    2) Improved Read Performance
+
+    System can be configured in such a way, so that, read requests can be made to the secondary nodes. But write
+    requests must be send to the priamry node.
+
+    See Replica images.
+
+    ---------------------------------> SHARDING ( horizontal scaling) <-----------------------------------------
+
+    Sharding refers to assembling different mongodb databases and all these databases distribute data across
+    different shards (this data is not replicated among different shards).
+
+    Queries are run across all shards.
+
+    In sharding, mongos (Router) is used to route the request to the correct shard. For splitting of the
+    request we use Shard Key.
+
+    Shard key is just a key that is added to the document, which help server to understand where this document
+    belongs to
+
+    see image Sharding_working.png
+    

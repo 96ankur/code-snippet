@@ -1,23 +1,27 @@
+//? CLASS IS A PROTOTYPE
+
 // class Rectangle {
-//     constructor(height, width) {     // A constructor can use super keyword to execute the constructor of super class.
-//       this.height = height;
-//       this.width = width;
-//     }
+//  constructor(height, width) { // A constructor can use super keyword to execute the constructor of super class.
+//      this.height = height;
+//      this.width = width;
+//  }
 // }
 
 // -----------------------------------------> A CLASS IS EXECUTED IN STRICT MODE  ---------------------------
 
-//An important difference between function declarations and class declarations is that function declarations are hoisted and class declarations are not. 
-//You first need to declare your class and then access it.
+//An important difference between function declarations and class declarations is that function declarations
+//are hoisted and class declarations are not. You first need to declare your class and then access it.
+
+// Function declatation and expression can be overwritten but class can not be overwritten
 
 // const p = new Rectangle(); // ReferenceError
 // class Rectangle {}
 
 //   --------- CLASS declaration can done by two type --------------------
 
-// //?  Method:  unnamed
+// //!  Method:  unnamed
 
-// let Rectangle = class {
+// let Rectangle = class {                   // this method of class declaration is known as class expression
 //     constructor(height, width) {
 //       this.height = height;
 //       this.width = width;
@@ -25,9 +29,9 @@
 //   };
 //   console.log(Rectangle.name);
 
-// //?  output: "Rectangle"
+// //*  output: "Rectangle"
   
-// //?  Method:  named
+// //!  Method:  named
 //   let Rectangle1 = class Rectangle2 {
 //     constructor(height, width) {
 //       this.height = height;
@@ -36,7 +40,7 @@
 //   };
 //   console.log(Rectangle1.name);
 
-// //?  output: "Rectangle2"
+// //*  output: "Rectangle2"
 
 //--------------------------------------------------------------------------------------------------->
 
@@ -45,11 +49,11 @@
 //     this.height = height;
 //     this.width = width;
 //   }
-// //?   Getter
+// //!   Getter
 //   get area() {
 //     return this.calcArea();
 //   }
-// //? Method
+// //! Method
 //   calcArea() {                          // ES6 syntax for declaring function
 //     return this.height * this.width;
 //   }
@@ -60,7 +64,7 @@
 // console.log(square.calcArea());
 
 
-// ------------------------- STATIC METHOD -----------------------------
+//? ------------------------- STATIC METHOD -----------------------------
 
 // Static methods are called without instantiating their class and cannot be called through a class instance.
 
@@ -81,7 +85,8 @@
 // // const p1 = new Point(5, 5);
 // // const p2 = new Point(10, 10);
 
-// console.log(Point.distance({x:5, y: 5}, {x: 10, y: 10})); // 7.0710678118654755
+// console.log(Point.distance({x:5, y: 5}, {x: 10, y: 10}));
+//* Output: 7.0710678118654755
 
 // ----------------------------------------------------------------------------------------->
 
@@ -103,9 +108,9 @@
 // let eat = Animal.eat;
 // console.log(eat()); // undefined
 
-// ------------------------------------ PUBLIC AND PRIVATE PROPERTIES---------------( not supported in node)-------------------------------->
+//? ---------------- PUBLIC AND PRIVATE PROPERTIES------( not supported in node)---------------------------->
 
-// ------> PUBLIC FIELDS
+//! ------> PUBLIC FIELDS
 
 // class Rectangle {
 //   height = 0;
@@ -118,7 +123,7 @@
 // const obj = new Rectangle(10, 20);
 // console.log(obj)
 
-// --------> PRIVATE FIELDS
+//! --------> PRIVATE FIELDS
 
 // class Rectangle {
 //   #height = 0;
@@ -128,4 +133,43 @@
 //     this.#width = width;
 //   }
 // }
+
+//? ------------------------- MIXINS -----------------------------
+
+let mixin = {
+    madeIn() {
+        console.log('This car was made in year 2019!');
+    }
+}
+
+let carMixin = {
+    __proto__: mixin,
+
+    madeIn() {
+        super.madeIn();
+    }
+};
+
+class SUV{
+    constructor(doors, engine, color, brand) {
+        this.doors = doors;
+        this.engine = engine;
+        this.color = color;
+        this.brand = brand;
+        this.wheels = 4;
+        this.ac = true; 
+
+       // assign mixin
+       Object.assign(this, carMixin);
+    }
+
+    myBrand() {
+        return console.log(`This SUV is a ${this.brand}`);
+        
+    }
+}
+
+const cx5 = new SUV(4,'V6','grey', 'mazda');
+console.log(cx5.madeIn());
+
 

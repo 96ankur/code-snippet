@@ -31,7 +31,7 @@ Query: db.users.updateOne({_id: ObjectId("5dc267d4d36b3d3f66de4e11")},{$inc: {ag
 
 Query: db.users.updateOne({_id: ObjectId("5dc267d4d36b3d3f66de4e11")},{$inc: {age:1}, $set: {age: 23}});
         |
-        |---------------> this will five error because both the operations is performed on the same field.
+        |---------------> this will give error because both the operations is performed on the same field.
 
 ================================================>  UPSERT  <====================================================================
 
