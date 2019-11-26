@@ -1,0 +1,17 @@
+================================> Transactions <===================================
+If one of the operation is not succeded then transaction will rollback to the initial state.
+
+Mongodb is ATOMIC at document level. But with transaction, we get atomicity at all operations.
+
+Steps for creating a Transaction:
+
+1) const session = db.getMongo().startSession();
+2) session.startTransaction();
+3) const usersColl = session.getDatabase("blog").users
+4) const postsColl = session.getDatabase("blog").posts
+5) usersColl.deleteOne({_id: ObjectId("5anjo89fnmi4krms0a")});
+6) postsColl.deleteMany({_id: ObjectId("5anjo89fnmi4krms0a")});
+                    ....
+                    ....
+                    ....
+7) session.commitTransaction();                 // or session.abortTransaction();
