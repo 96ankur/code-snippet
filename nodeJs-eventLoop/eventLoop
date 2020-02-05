@@ -1,0 +1,54 @@
+=> Everything that is asynchronous is not handled by a thread pool
+   Libuv creates a pool with four threads that is only used if no asynchronous API is avaliable
+
+   Not all the I/O functions happen in the thread pool. NodeJS do most of the I/O using non-blocking and
+   asynchronous hardware I/O, but for the I/O types which blocks or are complex to address, it uses the thread
+   pool.
+
+   However, I/O is not the only type of tasks performed on the thread pool. There are some Node.js crypto 
+   functions such as crypto.pbkdf2, async versions of crypto.randomBytes,crypto.randomFill and async versions of
+   zlib functions which run on the libuv thread pool because they are highly CPU intensive.
+   Running them on the threadpool prevents blocking of the event loop.
+
+                         ------------> EVENT LOOP PHASES <--------------
+
+                                         Timmers
+                                        callbacks
+                                       I/O Polling
+                                      set Immediate
+                                      Close events
+
+=>  Switch between one phase to another is called a TICK.
+
+-> Timmers  [ setTimeout(), setInterval()]
+-> I/O polling [system events(file operation)]
+=> Event Loop does not run in a separate thread than the user code.
+   There is only one thread that executes the Javascript code and this is the thread where event loop is running
+
+=> Event loop is not like a stack or queue.
+   It is a set of phases with dedicated data structures for each phase.
+
+=> After processing one phase and before moving to the next phase, event loop will process two intermediate
+   queues until no items are remaining in the intermediate queues.
+
+=> There are 4 main types of queues that are processed by the native libuv event loop.
+
+=> Besides these 4 main queues, there are additionally 2 queues which are processed by Node. 
+   Although these queues are not part of libuv itself but are parts NodeJS. They are,
+   -> Next Ticks Queue — Callbacks added using process.nextTick function (This queue isnot natively provided by the libuv, but 
+                         implemented in Node.)
+   -> Other Microtasks Queue — Includes other microtasks such as resolved promise callbacks
+
+=> Next tick queue vs Other Microtasks
+
+   Next tick queue has even higher priority over the Other Micro tasks queue. Although, they both are
+   processed in between two phases of the event loop when libuv communicates back to higher layers of Node
+   at the end of a phase.
+
+   Priority for next tick queue over resolved promises is only applicable for the native JS promises provided
+   by v8. If you are using a library such as q or bluebird, you will observe an entirely different result.
+
+   The convention of these so-called ‘intermediate’ queues introduces a new problem, "IO STARVATION".
+   Extensively filling up the next tick queue using process.nextTick function will force the event loop to
+   keep processing the next tick queue indefinitely without moving forward. This will cause IO starvation
+   because the event loop cannot continue without emptying the next tick queue.
