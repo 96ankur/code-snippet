@@ -1,0 +1,20 @@
+STEPS THAT A REQUIRE MODULE TAKES
+
+1)  Resolving
+2)  Loading
+3)  Wrapping
+4)  Evaluating
+5)  Caching
+
+
+=> require() search for file in the following order:
+1)  look for .js file
+2)  look for .json file
+3)  look for .node file
+
+=> How can you check for the existence of the local module?
+Ans.   require.resolve("module_name");   // this only evaluate the module and skip all the other steps.
+
+=> what are circular modular dependencies?
+Ans.   module1: require('module2);
+       module2: require('module1);

@@ -52,3 +52,53 @@
    Extensively filling up the next tick queue using process.nextTick function will force the event loop to
    keep processing the next tick queue indefinitely without moving forward. This will cause IO starvation
    because the event loop cannot continue without emptying the next tick queue.
+
+=> Q uses "process.nextTick" queue to schedule callbacks for resolved/rejected promises.
+
+==>  BlueBird
+
+-> Bluebird uses "setImmediate" by default to schedule promise callbacks.
+-> Bluebird, however, provides us a choice. We can select our own scheduling mechanism. 
+   Bluebird provides an API method named "setScheduler" which accepts a function which overrides the default
+   setImmediate scheduler.
+   
+   To use process.nextTick as the scheduler in bluebird you can specify,
+      const BlueBird = require('bluebird');
+      BlueBird.setScheduler(process.nextTick);
+
+   and to use setTimeout as the scheduler in bluebird you can use the following code,
+      const BlueBird = require('bluebird');
+      BlueBird.setScheduler((fn) => {
+          setTimeout(fn, 0);
+      });
+
+            ---------------> DOS AND DON’TS TO GET THE BEST RESULTS AND PERFORMANCE <----------------
+
+-> Avoid sync I/O inside repeatedly invoked code blocks
+-> Functions should be completely async or completely sync
+
+   The rule of thumb is, the function you write should be,
+   -> Completely synchronous — Behave synchronously for all the inputs/conditions
+   -> Completely asynchronous — Behave asynchronously for all the inputs/conditions.
+      
+      If your function is a hybrid of the above two and behaves differently for different inputs/conditions,
+      it may result in unpredictable outcomes of your applications.
+
+-> Too many nextTicks
+   While process.nextTick is very useful in many cases, recursively using process.nextTick can result in I/O
+   starvation.
+
+-> dns.lookup() vs dns.resolve*()
+
+-> Event loop monitoring
+
+   const LoopBench = require('loopbench');
+   const loopBench = LoopBench();
+
+   console.log(`loop delay: ${loopBench.delay}`);
+   console.log(`loop delay limit: ${loopBench.limit}`);
+   console.log(`is loop overloaded: ${loopBench.overlimit}`);
+
+
+-> WITH THE NEW CHANGES IN NODE V11, NEXTTICK CALLBACKS AND MICROTASKS WILL RUN BETWEEN EACH INDIVIDUAL
+   SETTIMEOUT AND SETIMMEDIATE CALLBACKS, EVEN IF THE TIMERS QUEUE OR THE IMMEDIATES QUEUE IS NOT EMPTY.

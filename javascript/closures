@@ -1,0 +1,166 @@
+/**
+ * A closure gives you access to an outer function’s scope from an inner function.
+ * In JavaScript, closures are created every time a function is created, at function creation time.
+ */
+
+1) Functions are assigned by value reference
+
+  function sayHello() {
+    console.log("hello");
+  };
+
+  var func = sayHello;
+
+  You are assigning the variable func a reference to the function sayHello, not a copy. Here, func is simply
+  an alias to sayHello. Anything you do on the alias you will actually be doing on the original function.
+
+  func.answer = 42;
+  console.log(sayHello.answer); // prints 42
+
+2 — Scopes have a lifetime
+  
+  When you call a function, you create a scope during the execution of that function. Then that scope goes
+  away.
+  
+  When you call the function a second time, you create a new different scope during the second execution.
+  Then this second scope goes away as well.
+
+  function printA() {
+  console.log(answer);
+  var answer = 1;
+  };
+
+  printA(); // this creates a scope which gets discarded right after
+  printA(); // this creates a new different scope which also gets discarded right after;
+
+  These two scopes that were created in the example above are different. The variable answer here is not
+  shared between them at all.
+
+  Every function scope has a lifetime. They get created and they get discarded right away. The only exception
+  to this fact is the global scope, which does not go away as long as the application is running.
+
+3 — Closures span multiple scopes
+  When you define a function, a closure gets created.
+
+  Unlike scopes, closures are created when you define a function, not when you execute it.
+  Closures also don’t go away after you execute that function.
+
+  You can access the data in a closure long after a function is defined and after it gets executed as well.
+
+  A closures encompasses everything the defined function can access. This means the defined function’s scope,
+  and all the nested scopes between the global scope and the defined function scope plus the global scope
+  itself.
+
+  var G = 'G';
+  // Define a function and create a closure
+  function functionA() {
+    var A = 'A'
+
+    // Define a function and create a closure
+    function functionB() {
+      var B = 'B'
+      console.log(A, B, G);
+
+    }
+
+    functionB();  // prints A, B, G
+    // functionB closure does not get discarded
+    A = 42;
+    functionB();  // prints 42, B, G
+  }
+  functionA();
+
+==========================================>  SCOPE vs CLOSURES  <=======================================
+
+  // scope: global
+  var a = 1;
+  void function one() {
+    // scope: one
+    // closure: [one, global]
+    var b = 2;
+
+    void function two() {
+      // scope: two
+      // closure: [two, one, global]
+      var c = 3;
+
+      void function three() {
+        // scope: three
+        // closure: [three, two, one, global]
+        var d = 4;
+        console.log(a + b + c + d); // prints 10
+      }();
+    }();  
+  }();
+
+  The scope of function one() is its body. Its closure gives us access to both its scope and the global scope.
+  
+  The scope of function two() is its body. Its closure gives us access to its scope plus the scope of function
+  one()plus the global scope
+  
+  And similarly, the closure of function three() gives us access to all scopes in the example. This is why we
+  were able to access all variables in function three().
+
+  example:
+    var v = 1;
+    var f1 = function () {
+      console.log(v);
+    }
+    var f2 = function() {
+      var v = 2;
+      f1(); // Will this print 1 or 2?
+    };
+    f2();
+
+    This code will actually print 1. The reason is, scopes and closures are different.
+    
+    The console.log line will use the closure of f1(), which is created when we define f1(), which means the
+    closure of f1() gives us access to only the scope of f1() plus the global scope.
+    
+    The scope where we execute f1() does not affect that closure. In fact, the closure of f1() will not give
+    us access to the scope of f2() at all.
+
+    If you remove the global v variable and execute this code, you’ll get a reference error:
+
+4 — Closures have read and write access
+
+  Since closures give us REFERENCE to variables in scopes, the access that they give us means both
+  read and write, not just read.
+
+  Take a look at this example:
+  function outer() {
+    let a = 42;
+  function inner() {
+      a = 43;
+    }
+  inner();
+    console.log(a); // output: 43
+  }
+  outer();
+
+============================================================================================================
+function makeFunc() {
+    var name = 'Mozilla';
+    function displayName() {
+      console.log(name);
+    }
+    return displayName;
+  }
+  
+  var myFunc = makeFunc();
+  myFunc();
+
+
+
+
+  function makeAdder(x) {        // this argument x of makeAdder is stored in the lexical environment, so that, it can be used
+    return function(y) {        //  by the function enclosed within it
+      return x + y;
+    };
+  }
+  
+  var add5 = makeAdder(5);
+  var add10 = makeAdder(10);
+  
+  console.log(add5(2));  // 7
+  console.log(add10(2)); // 12

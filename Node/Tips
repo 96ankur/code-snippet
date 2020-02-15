@@ -1,0 +1,16 @@
+1)  Do not read directly from env because there may be the chance that the value of the env variable
+    changed mistakenly. So read it from a config module.
+
+//  process is an event emitter
+
+2)  process.on('exit', code =>{
+        // do one final synchronous operation before node process terminates
+        // we cannot do asynchronous operation here (that is, we can use event loop here)
+    });
+
+3) process.on('uncaughtException', code =>{
+        // If we add a handler in the uncaughtException event then node process will not exit
+        // an continues in the unpredictable manner. So avoid using handler and let the process
+        // exit or manually exit the process in the handler
+    });
+

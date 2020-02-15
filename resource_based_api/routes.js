@@ -6,7 +6,7 @@ router.post('/user',async (req, res)=>{
     const {name, age} = req.body
     const db = req.app.locals.db;
     await db.collection('students').insertOne({name, age});
-    res.send('User created successfully');
+    res.status(200).send({message:'User created successfully', meta:{execTime:process.hrtime(req._startAt)[1]/1000000}});
 });
 
 router.get('/user/:name',async (req, res)=>{

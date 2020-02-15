@@ -1,0 +1,47 @@
+
+=> In Node.js, each worker will have its own instance of V8 and Event Loop. However, unlike child processes,
+   Workers can share memory.
+
+   Example: 
+    const {Worker, isMainThread, parentPort, workerData} = require('worker_threads');
+    if (isMainThread) {
+        const worker = new Worker(__filename, {workerData: {num: 5}});
+        worker.once('message', (result) => {
+            console.log('square of 5 is :', result);
+        })
+    } else {
+        parentPort.postMessage(workerData.num * workerData.num)
+    }
+
+=>  In Node.js, a worker’s responsibility is to execute a piece of code (worker script) provided by the parent
+    worker. The worker script will then run in isolation from other workers, with the ability to pass messages
+    between it and the parent worker.
+
+=>  Each worker is connected to its parent worker via a message channel. The child worker can write to the
+    message channel using parentPort.postMessage function and the parent worker can write to the message
+    channel by calling worker.postMessage() function on the worker instance.
+
+=>  How do Node.js workers run in parallel?
+
+    JavaScript does not provide concurrency straightaway, how can two Node.js workers run in parallel?
+    The answer is "V8 ISOLATES".
+
+    A V8 isolate is an independent instance of chrome V8 runtime which has its own JS heap and a microtask
+    queue. This allows each Node.js worker to run its JavaScript code completely in isolation from other
+    workers. The DOWNSIDE of this is that the workers cannot directly access each other's heaps directly.
+
+    Due to this, each worker will have its own copy of libuv event loop which is independent of other worker’s
+    and the parent worker’s event loops.
+
+=>  Even though worker threads are lightweight than actual processes, spawning workers involve some serious
+    work and can be expensive if done frequently.
+
+=>  It’s not cost-effective to use worker threads to parallelise I/O operations because using Node.js native
+    I/O mechanisms are way faster than starting up a worker thread from scratch just to do that.
+
+=>  Worker Thread Pooling
+
+    A pool of Node.js worker threads is a group of running worker threads which are available to be used for
+    incoming tasks. When a new task comes in, it can be passed to an available worker via the parent-child
+    message channel. Once the worker completes the task, it can pass the results back to the parent worker
+    via the same message channel.
