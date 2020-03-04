@@ -30,16 +30,16 @@
 // ------------------------------------------------------------------------------------------------->
 
  /**
- *                  ////////////////////////////////////////////////////////
- *                  //////                                            /////
- *                  ////// Objects created by a given constructor    /////
- *                  ////// will have the same prototype             /////
- *                  //////                                         /////
- *                  ////// Similarly Arrays created by a given    /////
- *                  ////// an array  constructor will have       /////
- *                  ////// the same prototype                   /////
- *                  //////                                     /////
- *                  ///////////////////////////////////////////////
+ *                  /////////////////////////////////////////////////////
+ *                  ///                                            /////
+ *                  /// Objects created by a given constructor    /////
+ *                  /// will have the same prototype             /////
+ *                  ///                                         /////
+ *                  /// Similarly Arrays created by a given    /////
+ *                  /// an array  constructor will have       /////
+ *                  /// the same prototype                   /////
+ *                  ///                                     /////
+ *                  ////////////////////////////////////////////
  * 
  */
 
@@ -101,7 +101,7 @@ let descriptor = Object.getOwnPropertyDescriptor(ObjectBase,'toString'); // this
 
  //---------------------------------------------------------------------------------------------------->
 
- ////////////// ------------------ CONSTRUCTOR PROTOTYPES--------------------------////////////////////
+            /// ------------------ CONSTRUCTOR PROTOTYPES--------------------------////////////////////
 
  /**
   *  As functions in javascript are objects, therfore constructor functions are also objects
@@ -121,7 +121,7 @@ console.log(circle2.constructor)
 
 //----------------------------------------------------------------------------------------------------->
 
-/////////////////-------- INSATANCE MEMBERS--------------///////////////////////
+                ///-------- INSATANCE MEMBERS--------------///////////////////////
 
 /**
  * function Circle(radius){
@@ -193,11 +193,11 @@ console.log(circle2.constructor)
     for (let key in c2) console.log(key);   // returns all members (instance or (own) + prototype)
 
     /**
-   *  ///////////////////////////////////////////////////////
-   * //////                                           /////
-   * ///// DON'T MODIFY OBJECTS YOU DON'T OWN        /////
-   * ///                                            /////
-   * ///////////////////////////////////////////////////
+   *  //////////////////////////////////////////////////////
+   *  ////                                           /////
+   *  /// DON'T MODIFY OBJECTS YOU DON'T OWN        /////
+   *  ///                                          /////
+   *  ////////////////////////////////////////////////
    * 
    * 
    *    Array.prototype.shuffle = function(){

@@ -56,6 +56,12 @@ test();
 // .then(res => console.log(res))
 // .catch(err => console.log(err))
 
+/* ---------------------------> */ //Promise.allSettled()
+
+// Promise.allSettled([promise1, promise2, promise3, promise4])
+// .then(res => console.log(res))
+// .catch(err => console.log(err))
+
 //---------------------------> Promise.map()
 
 // let i =0;
