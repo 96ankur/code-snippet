@@ -1,4 +1,20 @@
 
+// ---------------- creation of object------------------>
+// Method 3: Object() constructor
+
+const obj2 = new Object();
+
+obj2.name = 'ankur';
+obj2.age = 12;
+
+console.log(obj2);
+
+// Method 4: Object.create()
+
+const obj3 = Object.create(obj2); // this "create" method make obj2 as the prototype of the obj3
+console.log(obj3);
+
+
 // ----------------------------------------- A FACTORY FUNCTION----------------------------------------->
 function createCircle(radius,x,y){
     return {
@@ -87,7 +103,7 @@ console.log(another.constructor)
 
   *  then it is represented like this internally:
 
-        const Circle1 = new Function('radius', `  // internally javacript uses this function constructor
+        const Circle = new Function('radius', `  // internally javacript uses this function constructor
             this.radius = radius                 // to create this object
             this.draw   = function(){
                 console.log("draw");
@@ -96,11 +112,11 @@ console.log(another.constructor)
         
   * Now we can call this function like this:
 
-        const circle = new Circle1(1);
+        const circle = new Circle(1);
 
-  * this is exactly similar to this:
+  * this is exactly similar to:
 
-        Circle1.call({},1)  // "this" will point to this object
+        Circle.call({},1)  // "this" will point to this object
   */
 
 

@@ -26,7 +26,7 @@ fucntion getWage(baseSalary, overtime, rate) {
     return baseSalary + (overtime * rate);
 }
 
-Example of OOP:  
+Example of OOP (Encapsulation):  
 
 let employee = {
     baseSalary : 30,

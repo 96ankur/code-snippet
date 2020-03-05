@@ -33,7 +33,7 @@ const s = new Shape();
 
 // --------------------------------------------------------------------------------------------------->
 
-/////////////////////////----------- Resetting the constructor ----------------------//////////////////
+                        ///----------- Resetting the constructor ----------------------//////////////////
 
 /**
  *   In the above example before prototipical inheritance 
@@ -49,7 +49,7 @@ const s = new Shape();
  *         
  *           /////////////////////////////////////////////////////
  *          /////                                           /////
- *          ////  WHENEVER YOU RESET THE CONSTRUCTOR       /////
+ *           ///  WHENEVER YOU RESET THE CONSTRUCTOR       /////
  *          ///   PROPERTY, ALWAYS RESET THE CONSTRUCTOR  /////
  *         ///    AS WELL                                /////
  *        ///                                           /////
@@ -59,7 +59,7 @@ const s = new Shape();
 
  //-------------------------------------------------------------------------------------------------->
 
- //////////////////////-------- CALLING THE SUPER CONSTRUCTOR ---------------////////////////////////
+                    ///-------- CALLING THE SUPER CONSTRUCTOR ---------------////////////////////////
 
  function Shape1(color){
      this.color = color;
@@ -123,19 +123,20 @@ const s2 = new Shape2();
 
 //-------------------------------------------------------------------------------------------------->
 
- //////////////////////-------- METHOD OVERRIDING ---------------////////////////////////
+                                ///-------- METHOD OVERRIDING ---------------////////////////////////
  
-function extend(Child, Parent){             
-     Child.prototype = Object.create(Parent.prototype);
-     Child.prototype.constructor = Child 
-}
- function Shape3(){
+function Shape3(){
+    this.color = color;
 }
 
 Shape3.prototype.duplicate3 = function(){
    console.log('duplicate');
 }
 
+function extend(Child, Parent){             
+    Child.prototype = Object.create(Parent.prototype);
+    Child.prototype.constructor = Child 
+}
 
 function Circle3(){
 }
@@ -149,3 +150,59 @@ Circle3.prototype.duplicate3 = function(){
 const c3 = new Circle3();
 
 
+//-------------------------------------------------------------------------------------------------->
+
+                                ///-------- POLYMORPHISM ---------------////////////////////////
+
+function Shape4(){
+    this.color = color;
+}
+
+Shape3.prototype.duplicate4 = function(){
+   console.log('duplicate');
+}
+
+function extend(Child, Parent){             
+    Child.prototype = Object.create(Parent.prototype);
+    Child.prototype.constructor = Child 
+}
+
+function Circle4(){
+}
+
+extend(Circle4, Shape4);
+Circle3.prototype.duplicate4 = function(){
+    console.log('duplicate circle');
+ }
+
+
+function Square(){
+}
+
+extend(Square, Shape5);
+
+Square.prototype.duplicate = function(){
+    console.log('duplicate square');
+}
+
+const shapes = [
+    new Circle4(),
+    new Square()
+]
+
+for(let shape of shapes)
+    shape.duplicate();
+
+
+//-------------------------------------------------------------------------------------------------->
+
+//                  Don't go beyond one level of inheritance
+
+/**
+ *           ///////////////////////////////////////////////////
+ *          /////                                           ///
+ *         ///    FAVOR COMPOSITION OVER INHERITANCE       ///
+ *        ///                                           /////
+ *       ///////////////////////////////////////////////////
+ * 
+ */

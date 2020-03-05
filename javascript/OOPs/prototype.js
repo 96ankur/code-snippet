@@ -36,7 +36,7 @@
  *                  /// will have the same prototype             /////
  *                  ///                                         /////
  *                  /// Similarly Arrays created by a given    /////
- *                  /// an array  constructor will have       /////
+ *                  /// array constructor will have           /////
  *                  /// the same prototype                   /////
  *                  ///                                     /////
  *                  ////////////////////////////////////////////
@@ -64,7 +64,7 @@ const circle = new Circle(1);
 
  // ---------------------------------------------------------------------------------------------------->
 
- ////////////////------------------------ PROPERTY DESCRIPTORS -------------------------///////////////
+                ///------------------------ PROPERTY DESCRIPTORS -------------------------///////////////
 
 let person = { name: "Jhon"};
 let ObjectBase = Object.getPrototypeOf(person); // this function will return prototype of person
@@ -107,7 +107,7 @@ let descriptor = Object.getOwnPropertyDescriptor(ObjectBase,'toString'); // this
   *  As functions in javascript are objects, therfore constructor functions are also objects
   *  hence constructor function have properties and methods.
   * 
-  *  There is one property called "prototype", it is an object which is the prototype of all the objects
+  *  There is one property called "constructor", it is an object which is the prototype of all the objects
   *  that are created by this constructor function 
   */
 
@@ -188,7 +188,7 @@ console.log(circle2.constructor)
 
     c2.draw();
 
-    console.log(Object.keys(c1));   // returns instance members
+    console.log(Object.keys(c2));   // returns instance members
 
     for (let key in c2) console.log(key);   // returns all members (instance or (own) + prototype)
 
