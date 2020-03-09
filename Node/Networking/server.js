@@ -2,16 +2,27 @@ const server = require('net').createServer();
 let counter = 0;
 let sockets = {}; 
 
+function timeStamp(){
+    let now = new Date();
+    return `${now.getHours()}:${now.getMinutes()}`
+}
+
 server.on('connection', socket=>{   // it is duplex connection (that is, we can read and write both)
     socket.id = counter++;
-    sockets[socket.id] = socket;
 
     console.log('Client connected');
-    socket.write('Welcome new client\n');
+    socket.write('Please enter your name: ');
     // socket.setEncoding('utf8');
     socket.on('data', data => {
-        Object.entries(sockets).forEach(([, cs]) => {
-            cs.write(`${socket.id}: `);
+        if(!sockets[socket.id]){
+            socket.name = data.toString().trim();
+            socket.write(`Welcome ${socket.name}!\n`);
+            sockets[socket.id] = socket;;
+            return;
+        }
+        Object.entries(sockets).forEach(([key, cs]) => {
+            if(socket.id == key) return;
+            cs.write(`${socket.name} ${timeStamp()}: `);
             cs.write(data);
         });
     });

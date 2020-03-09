@@ -1,5 +1,5 @@
 // |||||||||||||||---------------------------- INHERITANCE --------------------------------------||||||||||||||||||||||||||||||||
-// -------------------------------------- Sub classing with extends ------------------------------------------------------------>
+//? -------------------------------------- Sub classing with extends ------------------------------------------------------------>
 
 
 // If there is a constructor present in the subclass, it needs to first call super() before using "this".
@@ -28,7 +28,7 @@
 //   d.speak(); // Mitzie barks.
   
   
-  // ----------------------------------------------------------------------------------------------------------->
+  //TODO: ----------------------------------------------------------------------------------------------------------->
   
   //  The super keyword is used to call corresponding methods of super class.
   
@@ -52,7 +52,7 @@
 //   let l = new Lion('Fuzzy');
 //   l.speak();
 
-  // --------------------------------  HAS A inheritance----------------------------------------->
+  //? --------------------------------  HAS A inheritance----------------------------------------->
 
 
   class ClassA { 
@@ -75,4 +75,21 @@
   }
 
   const obj = new ClassB('Lion');
-  obj.display()
+  obj.display();
+
+  //? -------------------------------- METHOD OVERRIDING----------------------------------------->
+
+class Shape{
+  move(){
+    console.log('move');
+  }
+}
+
+class Circle extends Shape{
+  move(){
+    super.move();
+    console.log('circle move');
+  }
+}
+
+const c = new Circle();
