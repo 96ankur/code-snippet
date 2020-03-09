@@ -1,5 +1,7 @@
 //? CLASS IS A PROTOTYPE
 
+//! ALL THE METHODS DEFINED IN A CLASS ARE PRESENT IN THE PROTOTYPE OF THE OBJECT OF THE CLASS
+
 // class Rectangle {
 //  constructor(height, width) { // A constructor can use super keyword to execute the constructor of super class.
 //      this.height = height;
@@ -42,27 +44,29 @@
 
 // //*  output: "Rectangle2"
 
-//--------------------------------------------------------------------------------------------------->
 
-// class Rectangle {
-//   constructor(height, width) {
-//     this.height = height;
-//     this.width = width;
-//   }
-// //!   Getter
-//   get area() {
-//     return this.calcArea();
-//   }
-// //! Method
-//   calcArea() {                          // ES6 syntax for declaring function
-//     return this.height * this.width;
-//   }
-// }
+//? -------------------------------------- GETTER AND SETTER -----------------------------
 
-// const square = new Rectangle(10, 10);
-// console.log(square.area);               // CALLING A GETTER ( that is, without parantheses )
-// console.log(square.calcArea());
+const _radius = new WeakMap();
 
+class Circle{
+    constructor(_radius){
+        _radius.set(this, radius);
+    }
+
+    get radius() {
+        return _radius.get(this);
+    }
+
+    set radius(value){
+        if(value <= 0) throw new Error('Invalid radius');
+        _radius.set(this, value);
+    }
+}
+
+const c = new Circle(1);
+console.log(c.radius);    // reading value
+c.radius = 2;             // setting value
 
 //? ------------------------- STATIC METHOD -----------------------------
 
@@ -108,7 +112,7 @@
 // let eat = Animal.eat;
 // console.log(eat()); // undefined
 
-//? ---------------- PUBLIC AND PRIVATE PROPERTIES------( not supported in node)---------------------------->
+//? --------------------------------- PUBLIC AND PRIVATE PROPERTIES--------------------------------->
 
 //! ------> PUBLIC FIELDS
 
@@ -125,51 +129,44 @@
 
 //! --------> PRIVATE FIELDS
 
-// class Rectangle {
-//   #height = 0;
-//   #width;
-//   constructor(height, width) {    
-//     this.#height = height;
-//     this.#width = width;
-//   }
-// }
+    // TODO ----------------------- Using Symbol() ----------------------------------------------------->
 
-//? ------------------------- MIXINS -----------------------------
+    // const _radius = Symbol();
+    // const _draw = Symbol();
+    // class Circle{
+    //     constructor(radius){
+    //         this[_radius] = radius;
+    //     }
+    //     [_draw]() {
+    //     }
+    // }
+    // const c = new Circle(1);
+    // console.log(c);
 
-let mixin = {
-    madeIn() {
-        console.log('This car was made in year 2019!');
-    }
-}
+    // TODO ----------------------- Using WeakMap() ----------------------------------------------------->
 
-let carMixin = {
-    __proto__: mixin,
+    /**
+     * WeakMap creats an object in which keys are objects and values can be anything
+     */
 
-    madeIn() {
-        super.madeIn();
-    }
-};
+    // const _radius = new WeakMap();
+    // const _move = new WeakMap();
 
-class SUV{
-    constructor(doors, engine, color, brand) {
-        this.doors = doors;
-        this.engine = engine;
-        this.color = color;
-        this.brand = brand;
-        this.wheels = 4;
-        this.ac = true; 
+    // class Circle{
+    //     constructor(radius){
+    //         _radius.set(this, radius);
+    //         _move.set(this, () => {            // use arrow function only becoz function expression will made
+    //             console.log('move', this);     // 'this' undefined whereas arrow function will point to the
+    //         })                                 // current object.
+    //     }
 
-       // assign mixin
-       Object.assign(this, carMixin);
-    }
+    //     draw(){
+    //         _move.get(this)();
 
-    myBrand() {
-        return console.log(`This SUV is a ${this.brand}`);
-        
-    }
-}
+    //         console.log('draw');
+    //     }
+    // }
 
-const cx5 = new SUV(4,'V6','grey', 'mazda');
-console.log(cx5.madeIn());
+    // const c = new Circle(1);
 
 
