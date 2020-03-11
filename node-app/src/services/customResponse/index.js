@@ -6,11 +6,12 @@ module.exports = {
 	/**
 	* Helper Method to handle API success Response
 	*/
-	success: (res, body = { msg:'Action completed successfully',data: {} }) => {
+	success: (res, body = { msg:'Action completed successfully',data: {} }, startTime) => {
 		return res.status(200).send({
 			status: true,
 			message: body.msg,
-			data: body.data
+			data: body.data,
+			meta: {execTime:`${process.hrtime(startTime)[0]*1000 + process.hrtime(startTime)[1]/1000000} ms`}
 		});
 	},
 	/**

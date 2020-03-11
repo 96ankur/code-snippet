@@ -25,7 +25,7 @@ module.exports = () => {
 	/**
 	 * User Dashboard Route
 	 */
-	Router.get('/user/profile',(req,res)=>{res.send({data:'Profile Component still in progress..'});});
+	Router.get('/user/profile',(req,res)=>{res.send({data:'Profile Component still in progress..', meta:{execTime:process.hrtime(req._startAt)[1]/1000000}});});
 	/**************************
  * END OF AUTHORIZED ROUTES
  **************************/

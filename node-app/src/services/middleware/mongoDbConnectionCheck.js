@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 module.exports = (req,res,next) => {
     function isConnected(mongo){
+        console
         return _.indexOf(
             [1],
             _.get(mongo, 'connection.readyState', null)

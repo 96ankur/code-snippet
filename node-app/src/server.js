@@ -1,15 +1,17 @@
 'use strict';
-const express = require('express');
-const bodyParser = require('body-parser');
 const http = require('http');
 const cors = require('cors');
 const helmet =require('helmet');
+const morgan = require('morgan');
+const express = require('express');
 const passport = require('passport');
-const mongoSanitize = require('express-mongo-sanitize');
-const connectDatabase = require('./db/connection');
-const log = require('./services/logger').getAppLevelInstance();
-const passportService = require('./services/passport');
+const bodyParser = require('body-parser');
+const log = require('./services/logger');
 const routeService = require('./Routes');
+const passportService = require('./services/passport');
+const mongoSanitize = require('express-mongo-sanitize');
+const {createDbConnection} = require('./db/connection');
+const {port} = require('./config');
 /********************************
  * LOAD SERVER EXPRESS SERVER
  ********************************/
@@ -28,6 +30,7 @@ class Server {
 		this._loadMongoSanitize();
 		this._loadDatabaseConnection();
 		this._loadPassPort();
+		this._loadMorgan();
 	}
 	_loadCors() {
 		//setting up the cors policy
@@ -53,12 +56,16 @@ class Server {
 	}
 	_loadDatabaseConnection() {
 		//Connect to mongodb
-		connectDatabase();
+		createDbConnection();
 	}
 	_loadPassPort() {
 		//initialize passport and invoke passport jwt token authentication function
 		passport.initialize();
 		passportService();
+	}
+
+	_loadMorgan(){
+		this._app.use(morgan(':method :url :status :res[content-length] - :response-time ms', { stream: log.stream }));
 	}
 	_loadRoutes() {
 		//load Route services
@@ -72,7 +79,7 @@ class Server {
 			})
 			.then(()=>{
 				return new Promise((resolve,reject) => {
-					this._server.listen(8080,'127.0.0.1',(err)=>{
+					this._server.listen(port,'127.0.0.1',(err)=>{
 						if(err) {
 							reject(err);
 						}

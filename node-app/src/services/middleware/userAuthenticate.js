@@ -1,7 +1,6 @@
 const passport = require('passport');
 const responseHelper = require('../customResponse');
-const logger = require('../logger');
-const log = new logger('MiddlewareController').getChildLogger();
+const log = require('../logger');
 /*********************************************
  * SERVICE FOR HANDLING TOKEN AUTHENTICATION
  *********************************************/

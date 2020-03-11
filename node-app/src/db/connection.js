@@ -1,13 +1,12 @@
-/* eslint-disable linebreak-style */
 'use strict';
 const mongoose = require('mongoose');
 const config = require('../config');
-const log = require('../services/logger').getAppLevelInstance();
+const log = require('../services/logger');
 mongoose.Promise = global.Promise;
 /********************************************************
  * UTILITY METHOD FOR HANDLING SERVER DATABASE CONNECTION
  ********************************************************/
-module.exports = () => {
+function createConnection() {
 	try {
 		let options = { useNewUrlParser: true, useCreateIndex: true,useUnifiedTopology: true };
 		let mongoUrl = config.databaseUrl;
@@ -37,3 +36,11 @@ module.exports = () => {
 		return Promise.reject(error);
 	}
 };
+
+// close mongoose connection
+function closeConnection(){
+    mongoose.connection.close();
+}
+
+exports.createDbConnection = createConnection;
+exports.closeDbConnection = closeConnection;

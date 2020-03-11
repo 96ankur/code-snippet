@@ -1,7 +1,6 @@
 'use strict';
 const bcrypt = require('bcrypt');
-const logger = require('../../services/logger');
-const log = new logger('userAuthController').getChildLogger();
+const log = require('../../services/logger');
 const jwtService = require('../../services/jwt');
 const responseHelper = require('../../services/customResponse');
 const {User, validate} = require('../../db/models/user');
@@ -70,7 +69,7 @@ module.exports = {
 			//update the response Data
 			responseData.msg = `welcome ${userData[0].user_name}`;
 			responseData.data = { authToken : jwtToken };
-			return responseHelper.success(res,responseData);
+			return responseHelper.success(res,responseData,req._startAt);
 		}
 		catch(error) {
 			log.error('failed to get user signup with error::',error);

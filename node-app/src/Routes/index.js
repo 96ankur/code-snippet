@@ -10,7 +10,7 @@ module.exports = (app) => {
 /**
 * Handling the Default Route
 */
-	app.get('/',(req,res) => {// eslint-disable-line
+	app.get('/',(req,res) => {
 		let responseData = {};
 		responseData.msg = 'UnAuthorized Access';
 		return responseHelper.error(res,responseData);

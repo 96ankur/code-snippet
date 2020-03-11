@@ -1,7 +1,11 @@
-/* eslint-disable linebreak-style */
 'use strict';
+
+require('dotenv').config();
+require('express-async-errors');
 const server = require('./src/server');
-const log = require('./src/services/logger').getAppLevelInstance();
+const log = require('./src/services/logger');
+const {closeDbConnection} = require('./src/db/connection');
+
 /*************************************************************************************/
 /* START PROCESS UNHANDLED METHODS */
 /*************************************************************************************/
@@ -24,3 +28,24 @@ process.on('uncaughtException', (err) => {
  */
 const appServer = new server();
 appServer.start();
+
+/**
+ *  CLEANUP BEFORE SERVER TERMINATION
+ */
+const sigs = ['SIGINT', 'SIGTERM', 'SIGQUIT']
+sigs.forEach(sig => {
+	process.on(sig, shutdown);
+
+    function shutdown(){
+        appServer._server.close((err) => {          // here server is closed, so that it will not accept new requests
+            log.info(`${sig} signal received. Server Terminated`);
+            closeDbConnection();
+            process.exit(0);               // exiting the process with status 0
+        });
+        setTimeout((err) => {
+            log.info('Forcing server close !!!', err);
+            closeDbConnection()
+            process.exit(1)
+          }, 5000)
+    }
+});
