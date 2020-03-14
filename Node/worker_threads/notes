@@ -1,4 +1,4 @@
-
+=>  The main goal of Workers is to improve the performance on CPU-intensive operations not I/O operations.
 => In Node.js, each worker will have its own instance of V8 and Event Loop. However, unlike child processes,
    Workers can share memory.
 
@@ -39,9 +39,68 @@
 =>  It’s not cost-effective to use worker threads to parallelise I/O operations because using Node.js native
     I/O mechanisms are way faster than starting up a worker thread from scratch just to do that.
 
+=>  What makes Worker Threads special:
+
+  ->  ArrayBuffers to transfer memory from one thread to another
+  ->  SharedArrayBuffer that will be accessible from either thread. It lets you share memory between threads
+      (limited to binary data).
+
+  ->  Atomics available, it lets you do some processes concurrently, more efficiently and allows you to
+      implement conditions variables in JavaScript
+
+  ->  MessagePort, used for communicating between different threads. It can be used to transfer structured
+      data, memory regions and other MessagePorts between different Workers.
+
+  ->  MessageChannel represents an asynchronous, two-way communications channel used for communicating
+      between different threads.
+
+  ->  WorkerData is used to pass startup data. An arbitrary JavaScript value that contains a clone of the
+      data passed to this thread’s Worker constructor. The data is cloned as if using postMessage()
+
+=>  TWO WAYS OF USING WORKERS
+
+    -> The first is to spawn a worker, execute its code, and send the result to the parent thread. With this
+       approach, each time a new task comes up, we have to create a worker all over again.
+    
+    -> The second way is to spawn a worker and set up listeners for the message event. Each time the message
+       is fired, it does the work and sends the result back to the parent thread, which keeps the worker
+       alive for later usage.
+
+    Node.js documentation recommends the second approach because of how much effort it takes to actually
+    create a thread worker, which requires creating a virtual machine and parsing and executing the code.
+    This method is also much more efficient than constantly spawning workers.
+
+    This approach is called worker pool because we create a pool of workers and keep them waiting,
+    dispatching the message event to do the work when needed.
+
 =>  Worker Thread Pooling
 
     A pool of Node.js worker threads is a group of running worker threads which are available to be used for
     incoming tasks. When a new task comes in, it can be passed to an available worker via the parent-child
     message channel. Once the worker completes the task, it can pass the results back to the parent worker
     via the same message channel.
+
+    ->  Here’s an example of a file that contains a worker that is spawned, executed, and then closed:
+
+        const { parentPort } require('worker_threads');
+        const collection = [];
+        for (let i = 0; i < 10; i += 1) {
+         collection[i] = i;
+        }
+        parentPort.postMessage(collection);
+
+    After sending the collection to the parent thread, it simply exits.
+
+    And here’s an example of a worker that can wait for a long period of time before it is given a task:
+
+        const { parentPort } require('worker_threads');
+        parentPort.on('message', (data: any) => {
+         const result = doSomething(data);
+         parentPort.postMessage(result);
+        });
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+                    threadId: a unique identifier assigned to the worker.
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
