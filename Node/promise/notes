@@ -18,5 +18,7 @@ A promise can be in 3 states:
 # Promise.resolve
 # Promise.reject
 
+==========> Takes callback rather then ".then()" (Bluebird)
+
 # Promise.map       (same as 'all' but we can control concurrency of parallel hits)
 # Promise.mapSeries (same as 'map' with concurrency 1)

@@ -5,12 +5,12 @@
 
 2)  process.on('exit', code =>{
         // do one final synchronous operation before node process terminates
-        // we cannot do asynchronous operation here (that is, we can use event loop here)
+        // we cannot do asynchronous operation here (that is, we can't use event loop here)
     });
 
 3) process.on('uncaughtException', code =>{
         // If we add a handler in the uncaughtException event then node process will not exit
-        // an continues in the unpredictable manner. So avoid using handler and let the process
+        // and continues in the unpredictable manner. So avoid using handler and let the process
         // exit or manually exit the process in the handler
     });
 

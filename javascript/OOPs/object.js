@@ -166,26 +166,26 @@ if('radius' in circle2)                     // To check the existance of propert
  * 
  *  By doing so we can create private properties and methods of an object
  */
-function Circle(radius){
-    this.radius = radius;
-    
-    let defaultLocation = {x: 0, y: 0};
-
-    let computeOptimumLocation =  function(){
-        // ......
-    }
-
-    this.draw   = function(){
-        computeOptimumLocation();
+    function Circle(radius){
+        this.radius = radius;
         
-        // defaultLocation   a "let" variable
-        // this.radius       a "this" varaible
+        let defaultLocation = {x: 0, y: 0};
 
-        console.log("draw");
+        let computeOptimumLocation =  function(){
+            // ......
+        }
+
+        this.draw   = function(){
+            computeOptimumLocation();
+            
+            // defaultLocation   a "let" variable
+            // this.radius       a "this" varaible
+
+            console.log("draw");
+        }
     }
-}
 
-const circle3 = new Circle(1); 
+    const circle3 = new Circle(1); 
 
 
 //----------------------------------------------------------------------------------------------------->

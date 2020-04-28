@@ -1,6 +1,6 @@
 /**
  * A closure gives you access to an outer function’s scope from an inner function.
- * In JavaScript, closures are created every time a function is created, at function creation time.
+ * In JavaScript, closures are created every time a function is created, at FUNCTION CREATION TIME.
  */
 
 1) Functions are assigned by value reference
@@ -11,7 +11,7 @@
 
   var func = sayHello;
 
-  You are assigning the variable func a reference to the function sayHello, not a copy. Here, func is simply
+  You are assigning the variable "func" a REFERENCE to the function sayHello, NOT A COPY. Here, "func" is simply
   an alias to sayHello. Anything you do on the alias you will actually be doing on the original function.
 
   func.answer = 42;
@@ -19,15 +19,15 @@
 
 2 — Scopes have a lifetime
   
-  When you call a function, you create a scope during the execution of that function. Then that scope goes
+  When you call a function, YOU CREATE A SCOPE DURING THE EXECUTION OF THAT FUNCTION. Then that scope goes
   away.
   
   When you call the function a second time, you create a new different scope during the second execution.
   Then this second scope goes away as well.
 
   function printA() {
-  console.log(answer);
-  var answer = 1;
+    console.log(answer);
+    var answer = 1;
   };
 
   printA(); // this creates a scope which gets discarded right after
@@ -36,13 +36,17 @@
   These two scopes that were created in the example above are different. The variable answer here is not
   shared between them at all.
 
-  Every function scope has a lifetime. They get created and they get discarded right away. The only exception
-  to this fact is the global scope, which does not go away as long as the application is running.
+  EVERY FUNCTION SCOPE HAS A LIFETIME. They get created and they get discarded right away.
+  
+  ******************************************************************************************************
+          THE ONLY EXCEPTION TO THIS FACT IS THE GLOBAL SCOPE, WHICH DOES NOT GO AWAY AS LONG AS THE 
+                                          APPLICATION IS RUNNING.
+  ******************************************************************************************************
 
 3 — Closures span multiple scopes
-  When you define a function, a closure gets created.
+  When a function is defined, a closure gets created.
 
-  Unlike scopes, closures are created when you define a function, not when you execute it.
+  Unlike scopes, CLOSURES ARE CREATED WHEN YOU DEFINE A FUNCTION, not when you execute it.
   Closures also don’t go away after you execute that function.
 
   You can access the data in a closure long after a function is defined and after it gets executed as well.

@@ -28,7 +28,7 @@
 
     A V8 isolate is an independent instance of chrome V8 runtime which has its own JS heap and a microtask
     queue. This allows each Node.js worker to run its JavaScript code completely in isolation from other
-    workers. The DOWNSIDE of this is that the workers cannot directly access each other's heaps directly.
+    workers. The DOWNSIDE of this is that the workers cannot directly access each other's heaps.
 
     Due to this, each worker will have its own copy of libuv event loop which is independent of other worker’s
     and the parent worker’s event loops.

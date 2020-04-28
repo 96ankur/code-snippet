@@ -1,11 +1,3 @@
-// function f1(){
-// console.log(this == global)     // true
-// }
-
-// f1();
-// console.log(this === global);  // false
-//---------------------------------------------------------------------------->
-
 // var obj = {a: 'Custom'};
 //  global.a = 'Global';   // in this way we declare a variable in the global object
 

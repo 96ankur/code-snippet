@@ -35,7 +35,7 @@
 
 => Besides these 4 main queues, there are additionally 2 queues which are processed by Node. 
    Although these queues are not part of libuv itself but are parts NodeJS. They are,
-   -> Next Ticks Queue — Callbacks added using process.nextTick function (This queue isnot natively provided by the libuv, but 
+   -> Next Ticks Queue — Callbacks added using process.nextTick function (This queue is not natively provided by the libuv, but 
                          implemented in Node.)
    -> Other Microtasks Queue — Includes other microtasks such as resolved promise callbacks
 
